@@ -1,0 +1,140 @@
+<!--
+Dream Clients site Design
+
+Mike Newell
+Maker
+Goodby Silverstein and Partners
+
+Design By David Byrd
+
+-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Metafor – Principle</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="stylesheet" type="text/css" href="css/style.css" /> 
+    </head>
+    <body>
+        <div id="wrap">
+            <div id="zoomer">
+                
+                <div class="small-window">
+                    <img class="small-image" src="images/cube3/small.svg" alt="small lorizzle" />
+                </div>
+                
+                <div class="big-window">
+                    <img class="big-image" src="images/cube3/big.svg" alt="big lorizzle" />
+                </div>
+                
+                <!-- <img src="images/magnifying-glass.png" alt="" id="mag" /> -->
+                
+            </div>
+            
+        </div>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+        <script>window.jQuery || document.write("<script src='js/jquery-1.7.1.min.js'>\x3C/script>")</script>
+        <script type="text/javascript" src="js/app.js"></script>
+        <script>
+            (function($) {
+                
+                $(window).load(function() {
+                    
+                    App.init();
+                    
+                });
+                
+                // grab the elements and do some calculations on the size of the "porthole", then set the porthole
+                var wrap = $('#wrap');
+                var zoomer = $('#zoomer');
+                var porthole = $('.big-window');
+                var secondImage = $('.big-image');
+                // var magImage = $('#mag');
+                var imgWidth = 610;
+                var imgHeight = 608;
+                var diameter = 400;
+                var radius = diameter / 2;
+
+                zoomer.css({
+                    width: imgWidth,
+                    height: imgHeight,
+                    top: '50%',
+                    marginTop: -imgHeight/2,
+                });
+                secondImage.css({
+                    width: imgWidth,
+                    height: imgHeight
+                });
+
+                // get the page offsets (since we centered our #zoomer)
+                var oLeft = zoomer.offset().left;
+                var oTop = zoomer.offset().top;
+                
+                porthole.css({
+                    width: diameter,
+                    height: diameter,
+                    backgroundColor: 'white',
+                    'border-radius': radius + 'px',
+                    '-moz-border-radius': radius + 'px',
+                    '-webkit-border-radius': radius + 'px',
+                    '-o-border-radius': radius + 'px'
+                });
+
+                // as soon as someone starts moving the mouse over #zoomer
+                wrap.on('mousemove', function(evt) {
+                    
+                    // get the position of the mouse over #zoomer
+                    var posLeft = (evt.pageX - oLeft);
+                    var posTop = (evt.pageY - oTop);
+                    
+                    // detect whether or not the mouse has moved past the left or right barriers of #zoomer
+                    // var limitLeft = ((posLeft - radius) > - radius) ? false : true;
+                    // var limitRight = ((posLeft + radius) < (440 + radius)) ? false : true;
+                    
+                    // if we're in bounds of #zoomer
+                    // if(!limitLeft && !limitRight) {
+                        
+                        // account for the radius of the "porthole"
+                        var posTop = posTop - radius;
+                        var posLeft = posLeft - radius;
+                    
+                        // move the porthole to the mouse's position
+                        porthole.css({
+                            top: posTop,
+                            left: posLeft,
+                            opacity: 1
+                        });
+                        
+                        // adjust the second image so it moves opposite the mouse movement (so it looks like its staying still)
+                        secondImage.css({
+                            top: -1 * (posTop),
+                            left: -1 * (posLeft)
+                        });
+
+                        $('html').css('cursor','none');
+                        
+                        // move the magnifying glass with the mouse
+                        // magImage.css({
+                        //     top: posTop,
+                        //     left: posLeft,
+                        //     opacity: 1
+                        // });
+                        
+                    // } else {
+                    //     // fade the porthole out
+                    //     porthole.css({
+                    //         opacity: 0
+                    //     });
+                        
+                    //     // fade the magnifying glass out
+                    //     magImage.css({
+                    //         opacity: 0
+                    //     });
+                    // }
+
+                });
+                
+            })(jQuery);
+        </script>
+    </body>
+</html>
